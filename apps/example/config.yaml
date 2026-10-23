@@ -1,0 +1,67 @@
+# Example deployment: a Google Drive folder, read and cut by Document AI.
+#
+# This is the reference client. Copy the directory to start another one (see
+# apps/README.md). Every value that identifies a corpus is a placeholder; the
+# boot refuses the ones that are not filled in, so a copy that forgot one never
+# starts against the wrong data.
+#
+# Carries no secret value. Each `*_secret` setting names where its value is
+# kept (`env:NAME` reads it from apps/example/.env, which is never committed).
+
+source:
+  type: gdrive
+  folder_ids:
+    - REPLACE_WITH_DRIVE_FOLDER_ID
+  credentials_secret: env:GOOGLE_SERVICE_ACCOUNT_KEY
+  units_per_minute: 325000
+
+# The paid route: Document AI reads the document and cuts it into pieces that
+# carry their heading path, tables and image descriptions, and it reads scans.
+# Delete this whole section to fall back to `pdftext`, the free route set by
+# apps/base/config.yaml.
+process:
+  type: docai
+  credentials_secret: env:GOOGLE_SERVICE_ACCOUNT_KEY
+  region: us
+  read:
+    processor_id: projects/REPLACE_PROJECT_NUMBER/locations/us/processors/REPLACE_PROCESSOR_ID
+    processor_version: pretrained-layout-parser-v1.0-2024-06-03
+    artifact_bucket: REPLACE_WITH_BUCKET_NAME
+  chunk:
+    size: 800
+
+embed:
+  model: qwen/qwen3-embedding-8b
+  dimension: 2048
+  context_window: 32768
+  prompts:
+    query: "Instruct: Given a question about a document, retrieve the passages that answer it\nQuery: "
+    document: ""
+  base_url: https://openrouter.ai/api/v1
+  allowed_hosts:
+    - openrouter.ai
+  credentials_secret: env:OPENROUTER_KEY
+  batch_size: 64
+
+db:
+  url: postgresql://postgres@127.0.0.1:5433/postgres
+
+search:
+  dense_weight: 0.5
+  lexical_weight: 0.5
+
+api:
+  credentials_secret: env:API_TOKEN
+  allowed_hosts:
+    - localhost
+    - 127.0.0.1
+
+mcp:
+  credentials_secret: env:API_TOKEN
+
+telemetry:
+  client: example
+
+schedule:
+  full_sweep: "0 3 * * *"
+  incremental: ""

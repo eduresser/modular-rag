@@ -1,0 +1,32 @@
+# Secrets — the .env.example files ARE committed, the .env files never are (P-012)
+.env
+apps/*/.env
+!.env.example
+!apps/*/.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# The tool surface, as a Claude Code client reads it. Never committed, and for
+# the reason `.env` is not: it carries the credential's VALUE in the clear, and
+# a project-scoped .mcp.json is otherwise exactly the kind of file that gets
+# shared (principle P-012). It also names a port and a deployment, which are
+# one developer's business — `make postman APP=<app>` is what a colleague runs
+# to get the same two surfaces without anybody's token.
+.mcp.json
+
+# Derived from the application by `make postman` — the generator ships, the
+# collection does not. A committed collection with no generator behind it is
+# artefact that drifts from the API once nothing regenerates it.
+build/
+
+# Local scratch
+tmp/
+research-notes/
+n8nsitemap.txt
+

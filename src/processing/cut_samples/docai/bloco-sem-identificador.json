@@ -1,0 +1,47 @@
+{
+  "chunkedDocument": {
+    "chunks": [
+      {
+        "chunkId": "c1",
+        "content": "Cláusula segunda — do prazo",
+        "pageSpan": {
+          "pageEnd": 1,
+          "pageStart": 1
+        },
+        "sourceBlockIds": [
+          "b1"
+        ]
+      }
+    ]
+  },
+  "docid": "bloco-sem-identificador",
+  "documentLayout": {
+    "blocks": [
+      {
+        "blockId": "b1",
+        "pageSpan": {
+          "pageEnd": 1,
+          "pageStart": 1
+        },
+        "textBlock": {
+          "text": "Cláusula segunda — do prazo",
+          "type": "heading-1"
+        }
+      },
+      {
+        "pageSpan": {
+          "pageEnd": 1,
+          "pageStart": 1
+        },
+        "textBlock": {
+          "text": "A locação vigorará pelo prazo de trinta meses, contados da assinatura deste instrumento.",
+          "type": "paragraph"
+        }
+      }
+    ]
+  },
+  "shardInfo": {
+    "shardCount": 1,
+    "shardIndex": 0
+  }
+}

@@ -1,0 +1,66 @@
+# The processing module's own settings, with every default it ships.
+#
+# Documentation, not configuration — see src/sources/config.example.yaml for
+# why this file exists (tests/test_processing_settings.py compares it field by
+# field against the read stage's settings).
+
+process:
+  # Which module reads a document AND cuts it. A closed set (principle P-011),
+  # and one name for both halves because it is one call: the cut is `chunkSize`
+  # travelling inside the request that read the document. `docling` is the
+  # second module the price table already anticipates.
+  type: docai
+  # The stage's own credential, a reference and never a value (P-012). One,
+  # because there is one call to make — not one per half.
+  credentials_secret:
+  # The host both the batch call and the re-cut call go to. A closed pair: the
+  # provider has exactly two regions and neither is in South America.
+  region: us
+
+  read:
+    # What every reader has: the kept output is a principle, not one provider's
+    # detail (P-009, ASM-020), and it is what makes re-cutting cheap.
+    artifact_bucket:
+    # What only the provider's Layout Parser has.
+    processor_id:
+    # Pinned, with no default (AC-036): an unversioned request follows the
+    # provider's console default, which moves without a deploy.
+    processor_version: pretrained-layout-parser-v1.0-2024-06-03
+    # The batch path's own limits — the only path this reader offers (ASM-020).
+    page_limit: 200
+    max_document_bytes: 1073741824
+    max_documents_per_batch: 1000
+    max_concurrent_batches: 5
+    # Both on (ASM-024): without them a table reaches the index as a hole.
+    enable_table_annotation: true
+    enable_image_annotation: true
+
+  chunk:
+    # In the reader's TOKENS, because that is the unit its API takes: 800 is
+    # about 3,200 characters in Portuguese, not 800 of them. Both of the two
+    # settings below are `chunkingConfig` fields the provider defines — there
+    # is no third, because a cutting knob this service would have to honour by
+    # hand is a knob nobody honours (AC-234).
+    size: 800
+    include_headings: true
+
+# ── The second module: the free route ──────────────────────────────────────
+#
+# `pdftext` opens a PDF here and reads the text the file already carries. What
+# it costs is nothing; what it gives up is the heading path, and a piece is
+# one page, citable by its page number.
+#
+# Its whole settings surface is below, and the shortness is the point: there is
+# no version to pin (the extractor's is MEASURED off the installed package,
+# ASM-144), no processor to name, no region because nothing leaves this
+# process, no cutting knob because a page is what the file supplies, and no
+# credential because it reaches nobody.
+#
+# process:
+#   type: pdftext
+#
+# That is the entire section. No credential, because there is no service to
+# spend one on; no bucket, because keeping what was read is the principle
+# (P-009) and WHERE is the module's business — this one keeps it in the
+# archive's own database, which is one account fewer to provision and one
+# thing to back up instead of two (AC-272).

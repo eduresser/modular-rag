@@ -1,0 +1,25 @@
+# Excludes a client's secret VALUES from the build context — those files are
+# already untracked by git (see .gitignore); this is the second lock on the
+# same door, and it is cheap: a context that includes one puts it in a layer
+# that outlives the container.
+apps/*/.env
+.env
+.env.example
+apps/*/.env.example
+
+.git
+.gitignore
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+tests/
+tmp/
+research-notes/
+docs/
+.spec/
+AGENTS.md
+CLAUDE.md

@@ -1,0 +1,407 @@
+{
+  "chunkedDocument": {
+    "chunks": [
+      {
+        "chunkFields": [
+          {
+            "fieldName": "numero_contrato",
+            "fieldValue": "4521/2024"
+          }
+        ],
+        "chunkId": "c1",
+        "content": "Contrato de Locação Residencial\n\nPelo presente instrumento particular, as partes abaixo qualificadas ajustam entre si o presente contrato de locação.",
+        "pageFooters": [
+          {
+            "text": "Página 1 de 2 — documento confidencial"
+          }
+        ],
+        "pageHeaders": [
+          {
+            "text": "CONTRATO Nº 4521/2024 — LOCAÇÃO RESIDENCIAL"
+          }
+        ],
+        "pageSpan": {
+          "pageEnd": 1,
+          "pageStart": 1
+        },
+        "sourceBlockIds": [
+          "b1",
+          "b2"
+        ]
+      },
+      {
+        "chunkId": "c2",
+        "content": "Cláusula primeira — do objeto — ΑΝΕΧΟ I, СЕР. 20040-020.\n\nO LOCADOR dá em locação ao LOCATÁRIO o imóvel situado à Rua das Palmeiras, 120, nesta cidade.",
+        "pageSpan": {
+          "pageEnd": 1,
+          "pageStart": 1
+        },
+        "sourceBlockIds": [
+          "b3",
+          "b4"
+        ]
+      },
+      {
+        "chunkId": "c3",
+        "content": "Do reajuste\n\n1. Reajuste anual pelo IGP-M.",
+        "pageSpan": {
+          "pageEnd": 2,
+          "pageStart": 2
+        },
+        "sourceBlockIds": [
+          "b5",
+          "b6-1"
+        ]
+      },
+      {
+        "chunkId": "c4",
+        "content": "Aluguel — todo dia 5 — índice: IGP-M",
+        "pageSpan": {
+          "pageEnd": 2,
+          "pageStart": 2
+        },
+        "sourceBlockIds": [
+          "b7-c3",
+          "b7-c4",
+          "b7-c5"
+        ]
+      },
+      {
+        "chunkId": "c5",
+        "content": "",
+        "pageSpan": {
+          "pageEnd": 2,
+          "pageStart": 2
+        },
+        "sourceBlockIds": [
+          "b8"
+        ]
+      }
+    ]
+  },
+  "docid": "contrato",
+  "documentLayout": {
+    "blocks": [
+      {
+        "blockId": "hdr-p1",
+        "boundingBox": {
+          "bottom": 0.045,
+          "left": 0.08,
+          "right": 0.92,
+          "top": 0.02
+        },
+        "pageSpan": {
+          "pageEnd": 1,
+          "pageStart": 1
+        },
+        "textBlock": {
+          "text": "CONTRATO Nº 4521/2024 — LOCAÇÃO RESIDENCIAL",
+          "type": "header"
+        }
+      },
+      {
+        "blockId": "b1",
+        "boundingBox": {
+          "bottom": 0.12,
+          "left": 0.1,
+          "right": 0.9,
+          "top": 0.08
+        },
+        "pageSpan": {
+          "pageEnd": 1,
+          "pageStart": 1
+        },
+        "textBlock": {
+          "text": "Contrato de Locação Residencial",
+          "type": "title"
+        }
+      },
+      {
+        "blockId": "b2",
+        "pageSpan": {
+          "pageEnd": 1,
+          "pageStart": 1
+        },
+        "textBlock": {
+          "text": "Pelo presente instrumento particular, as partes abaixo qualificadas ajustam entre si o presente contrato de locação.",
+          "type": "paragraph"
+        }
+      },
+      {
+        "blockId": "b3",
+        "pageSpan": {
+          "pageEnd": 1,
+          "pageStart": 1
+        },
+        "textBlock": {
+          "text": "Cláusula primeira — do objeto — ΑΝΕΧΟ I, СЕР. 20040-020.",
+          "type": "heading-1"
+        }
+      },
+      {
+        "blockId": "b4",
+        "pageSpan": {
+          "pageEnd": 1,
+          "pageStart": 1
+        },
+        "textBlock": {
+          "text": "O LOCADOR dá em locação ao LOCATÁRIO o imóvel situado à Rua das Palmeiras, 120, nesta cidade.",
+          "type": "paragraph"
+        }
+      },
+      {
+        "blockId": "ftr-p1",
+        "pageSpan": {
+          "pageEnd": 1,
+          "pageStart": 1
+        },
+        "textBlock": {
+          "text": "Página 1 de 2 — documento confidencial",
+          "type": "footer"
+        }
+      },
+      {
+        "blockId": "hdr-p2",
+        "pageSpan": {
+          "pageEnd": 2,
+          "pageStart": 2
+        },
+        "textBlock": {
+          "text": "CONTRATO Nº 4521/2024 — LOCAÇÃO RESIDENCIAL",
+          "type": "header"
+        }
+      },
+      {
+        "blockId": "b5",
+        "pageSpan": {
+          "pageEnd": 2,
+          "pageStart": 2
+        },
+        "textBlock": {
+          "text": "Do reajuste",
+          "type": "heading-2"
+        }
+      },
+      {
+        "blockId": "b6",
+        "listBlock": {
+          "listEntries": [
+            {
+              "blocks": [
+                {
+                  "blockId": "b6-1",
+                  "pageSpan": {
+                    "pageEnd": 2,
+                    "pageStart": 2
+                  },
+                  "textBlock": {
+                    "text": "Reajuste anual pelo IGP-M.",
+                    "type": "paragraph"
+                  }
+                }
+              ]
+            },
+            {
+              "blocks": [
+                {
+                  "blockId": "b6-2",
+                  "pageSpan": {
+                    "pageEnd": 2,
+                    "pageStart": 2
+                  },
+                  "textBlock": {
+                    "text": "Na falta deste índice, pelo IPCA.",
+                    "type": "paragraph"
+                  }
+                }
+              ]
+            }
+          ],
+          "type": "ordered"
+        },
+        "pageSpan": {
+          "pageEnd": 2,
+          "pageStart": 2
+        }
+      },
+      {
+        "blockId": "b7",
+        "pageSpan": {
+          "pageEnd": 2,
+          "pageStart": 2
+        },
+        "tableBlock": {
+          "annotations": {
+            "description": "Tabela de vencimentos do aluguel e dos encargos, com o índice de reajuste aplicável a cada parcela."
+          },
+          "bodyRows": [
+            {
+              "cells": [
+                {
+                  "blocks": [
+                    {
+                      "blockId": "b7-c3",
+                      "pageSpan": {
+                        "pageEnd": 2,
+                        "pageStart": 2
+                      },
+                      "textBlock": {
+                        "text": "Aluguel",
+                        "type": "paragraph"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "blocks": [
+                    {
+                      "blockId": "b7-c4",
+                      "pageSpan": {
+                        "pageEnd": 2,
+                        "pageStart": 2
+                      },
+                      "textBlock": {
+                        "text": "todo dia 5",
+                        "type": "paragraph"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "blocks": [
+                    {
+                      "blockId": "b7-c5",
+                      "pageSpan": {
+                        "pageEnd": 2,
+                        "pageStart": 2
+                      },
+                      "textBlock": {
+                        "text": "IGP-M",
+                        "type": "paragraph"
+                      }
+                    }
+                  ],
+                  "rowSpan": 2
+                }
+              ]
+            },
+            {
+              "cells": [
+                {
+                  "blocks": [
+                    {
+                      "blockId": "b7-c6",
+                      "pageSpan": {
+                        "pageEnd": 2,
+                        "pageStart": 2
+                      },
+                      "textBlock": {
+                        "text": "Condomínio",
+                        "type": "paragraph"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "blocks": [
+                    {
+                      "blockId": "b7-c7",
+                      "pageSpan": {
+                        "pageEnd": 2,
+                        "pageStart": 2
+                      },
+                      "textBlock": {
+                        "text": "todo dia 10",
+                        "type": "paragraph"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "caption": "Tabela 1 — Parcelas e reajuste",
+          "headerRows": [
+            {
+              "cells": [
+                {
+                  "blocks": [
+                    {
+                      "blockId": "b7-c0",
+                      "pageSpan": {
+                        "pageEnd": 2,
+                        "pageStart": 2
+                      },
+                      "textBlock": {
+                        "text": "Parcela",
+                        "type": "paragraph"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "blocks": [
+                    {
+                      "blockId": "b7-c1",
+                      "pageSpan": {
+                        "pageEnd": 2,
+                        "pageStart": 2
+                      },
+                      "textBlock": {
+                        "text": "Vencimento",
+                        "type": "paragraph"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "blocks": [
+                    {
+                      "blockId": "b7-c2",
+                      "pageSpan": {
+                        "pageEnd": 2,
+                        "pageStart": 2
+                      },
+                      "textBlock": {
+                        "text": "Índice de reajuste",
+                        "type": "paragraph"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "blockId": "b8",
+        "imageBlock": {
+          "annotations": {
+            "description": "Planta baixa do imóvel locado, com a metragem dos cômodos."
+          },
+          "imageText": "ÁREA TOTAL: 78,4 m²"
+        },
+        "pageSpan": {
+          "pageEnd": 2,
+          "pageStart": 2
+        }
+      },
+      {
+        "blockId": "ftr-p2",
+        "pageSpan": {
+          "pageEnd": 2,
+          "pageStart": 2
+        },
+        "textBlock": {
+          "text": "Página 2 de 2 — documento confidencial",
+          "type": "footer"
+        }
+      }
+    ]
+  },
+  "shardInfo": {
+    "shardCount": 1,
+    "shardIndex": 0
+  }
+}

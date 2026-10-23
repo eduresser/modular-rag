@@ -1,0 +1,65 @@
+{
+  "chunkedDocument": {
+    "chunks": [
+      {
+        "chunkId": "c1",
+        "content": "Cláusula terceira — da garantia",
+        "pageSpan": {
+          "pageEnd": 1,
+          "pageStart": 1
+        },
+        "sourceBlockIds": [
+          "b1"
+        ]
+      },
+      {
+        "chunkId": "c2",
+        "content": "A garantia é caução equivalente a três aluguéis.",
+        "pageSpan": {
+          "pageEnd": 1,
+          "pageStart": 1
+        },
+        "sourceBlockIds": [
+          "b9"
+        ]
+      }
+    ]
+  },
+  "docid": "chunk-sem-bloco",
+  "documentLayout": {
+    "blocks": [
+      {
+        "blockId": "b1",
+        "boundingBox": {
+          "bottom": 0.18,
+          "left": 0.1,
+          "right": 0.9,
+          "top": 0.15
+        },
+        "pageSpan": {
+          "pageEnd": 1,
+          "pageStart": 1
+        },
+        "textBlock": {
+          "text": "Cláusula terceira — da garantia",
+          "type": "heading-1"
+        }
+      },
+      {
+        "blockId": "b2",
+        "pageSpan": {
+          "pageEnd": 1,
+          "pageStart": 1
+        },
+        "textBlock": {
+          "text": "A garantia é caução equivalente a três aluguéis, a ser depositada em conta vinculada.",
+          "type": "paragraph"
+        }
+      }
+    ]
+  },
+  "shardInfo": {
+    "shardCount": 1,
+    "shardIndex": 0
+  }
+}

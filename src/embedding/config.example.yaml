@@ -1,0 +1,68 @@
+# The embedding module's own settings, with every default it ships.
+#
+# Documentation, not configuration — see src/sources/config.example.yaml for
+# why this file exists. No setting name here contains a vendor's name, and a
+# test asserts it: AC-050 is that changing provider is a change of values and
+# never a rename.
+
+embed:
+  # The model, by the slug the gateway knows it by — that is the string that
+  # reaches the wire.
+  model: qwen/qwen3-embedding-8b
+  # Also the store's column type (ASM-031), so changing it is a schema
+  # migration and not a configuration change.
+  dimension: 2048
+  # The PROVIDER's own documented input limit, never the gateway's advertised
+  # one — they disagree and the gateway's is the larger. Required, so a model
+  # with no window is a file that does not parse rather than a check that is
+  # skipped.
+  context_window: 32768
+  # What each role wears so the model can tell a question from a passage. The
+  # shape is sentence-transformers', where a model ships its own `prompts`
+  # object — that is the answer with no lookup table in it, and it is not
+  # available over an OpenAI-shaped endpoint, so the deployment that chose the
+  # model writes them down.
+  #
+  # Both halves, because a model may want both: the e5 family prefixes `query: `
+  # AND `passage: ` and its card says omitting either degrades quality. Empty
+  # means the model makes no such distinction through this endpoint.
+  #
+  # `document` reaches the fingerprint and `query` does not: a prompt on the
+  # passage is part of the text every stored vector was made from; a prompt on
+  # the question changes what a search sends and no row of the archive.
+  prompts:
+    query: ''
+    document: ''
+  base_url: https://openrouter.ai/api/v1
+  # Where the embedding call may go. Empty permits nothing.
+  allowed_hosts: []
+  # The generations this archive can still read back, beyond the configured
+  # model — which is always resolvable and never listed here.
+  understood_models: []
+  # The provider's published ceiling on inputs per request.
+  max_inputs_per_request: 2048
+  # A reference, never a value (principle P-012).
+  credentials_secret:
+  # Empty is not "no pinning": fallback is disabled either way, and naming a
+  # provider pins which upstream serves the request.
+  provider: ''
+  # A bet on how much work one refusal throws away, not a throughput knob.
+  batch_size: 64
+  # How this deployment shapes the call, in the three places a call has —
+  # OpenAPI's own division (`in: header`, `in: query`, `requestBody`), and the
+  # one LangChain's embedding client takes as default_headers / default_query /
+  # model_kwargs. Merged OVER what the module builds, never instead of it.
+  #
+  # Only `body` reaches the fingerprint: it decides what comes back, so changing
+  # it means the stored vectors were made by a call this deployment no longer
+  # makes. Headers and params decide who is asking and where, so hashing them
+  # would re-embed a corpus for a rotated key.
+  #
+  # A key that collides with a guarantee is refused at boot by name: model,
+  # dimensions, allow_fallbacks and input in the body; Authorization and
+  # Content-Type in the headers. A provider wanting its credential elsewhere
+  # names ITS header here and leaves Authorization alone.
+  request:
+    headers: {}
+    params: {}
+    body: {}

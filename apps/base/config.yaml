@@ -1,0 +1,275 @@
+# The layer every client is read over.
+#
+# It names what every deployment shares and deliberately OMITS what each client
+# has to state for itself — its Drive folder, its reader processor, its bucket,
+# its archive, its name and the names it answers to. A placeholder for one of
+# those would let a client that forgot to override it start against the wrong
+# corpus; omitted, the boot stops and names the setting (AC-001).
+#
+# It also omits every credential. Which backend a deployment resolves through
+# is a per-client, reviewed line — that is the whole of the answer to Q-080,
+# and a base that chose `env:` for everybody would make the unsealed path the
+# default for every new client (ASM-001).
+#
+# Carries no secret value, and cannot (principle P-012): only a setting whose
+# name ends in `_secret` may hold a reference, and this file holds none.
+
+source:
+  # Which module runs the source stage. The settings of that module sit here
+  # beside it rather than in a section named after the vendor: the stage is
+  # what every deployment has, the vendor is what it may swap.
+  type: gdrive
+  # Measured quota grant, in units a minute; a download costs 200 (ASM-013).
+  units_per_minute: 325000
+
+process:
+  # THE DEFAULT ROUTE, and `type` is the only process setting this layer may
+  # name. Everything else under `process` belongs to one module or the other,
+  # and a layer MERGES rather than removes: a base naming `processor_version`
+  # would hand it to a client that chose the free module, and that client would
+  # be refused at boot for a line it never wrote (AC-228). `type` is the one key
+  # every module has, so naming it here replaces cleanly and leaks nothing —
+  # which is only true while the module named has no settings of its own, and
+  # this one has none at all.
+  #
+  # `pdftext` rather than `docai`, and the argument is about which way a
+  # forgotten decision fails:
+  #
+  #   pdftext  a client that never thought about this gets a route that costs
+  #            NOTHING and refuses what it cannot read — a scanned PDF becomes a
+  #            `document_reads` row saying so, countable by format. Loud, free.
+  #   docai    the same client silently spends US$ 10 per 1,000 pages. Quiet,
+  #            expensive, and discovered on an invoice.
+  #
+  # What the default gives up is the heading path, measured at Context@5 going
+  # from 26.67% to 61.67% — which is why a client whose corpus deserves it names
+  # `type: docai` in its own file and fills in what that module needs. That is
+  # what `apps/example/config.yaml` does.
+  #
+  # `src/processing/config.example.yaml` is what both look like, field by field,
+  # and `tests/test_processing_settings.py` holds that file to the models.
+  type: pdftext
+
+embed:
+  # qwen/qwen3-embedding-8b at 2048 dimensions (Q-030). The width is also the
+  # store's column type (ASM-031), so changing it is a schema migration.
+  #
+  # `model`, `context_window` and `query_instruction` move TOGETHER: they are
+  # three facts about one model, and a deployment that overrides the first and
+  # inherits the other two gets a window that is not its model's and a prefix
+  # written for somebody else's. A test refuses a file that names one without
+  # the others.
+  model: qwen/qwen3-embedding-8b
+  dimension: 2048
+  # The PROVIDER's documented input limit, never the gateway's advertised one:
+  # they disagree and the gateway's is the larger. OpenRouter lists 20K of
+  # context for google/gemini-embedding-001 where Google documents 2048, and
+  # taking the larger number embeds truncated pieces with nothing to show it.
+  # This model's own card says 32k and the gateway agrees, which is not true
+  # of every model worth trying.
+  context_window: 32768
+  # What each role wears so the model can tell a question from a passage. The
+  # shape is sentence-transformers', where a model ships its own `prompts`
+  # object and nobody maintains a table of which model wants what; that answer
+  # needs the model's own config, which an OpenAI-shaped endpoint does not
+  # serve, so they are written here instead.
+  #
+  # `query` touches queries only and moves no indexing fingerprint. `document`
+  # DOES: it is prefixed onto the text every stored vector is made from, so
+  # changing it is a re-embedding.
+  prompts:
+    query: "Instruct: Given a question about a document, retrieve the passages that answer it\nQuery: "
+    # This model leaves the passage bare. The e5 family would want `passage: `
+    # here, and its card says omitting it degrades quality — which is why the
+    # half exists rather than being assumed empty forever.
+    document: ""
+  base_url: https://openrouter.ai/api/v1
+  # Where the embedding call may go. A host nobody listed is refused at boot
+  # rather than tried, because the corpus is what travels to it. This file is
+  # committed, so widening the list is a pull request — which is what it was
+  # when the list lived in code.
+  allowed_hosts:
+    - openrouter.ai
+  # The models whose vectors this archive can still read back, beyond the one
+  # configured above — the generations written before it. The configured model
+  # is always resolvable and is never listed. Removing an entry is deliberate:
+  # the pieces stamped with it stop resolving the moment it goes.
+  understood_models: []
+  # The provider's published ceiling on inputs per request. A batch above it is
+  # refused by the far end after the whole body has been uploaded.
+  max_inputs_per_request: 2048
+  # A bet on how much work one refusal throws away, not a throughput knob.
+  batch_size: 64
+  # MEASURED 2026-09-10 and pending a decision: `allow_fallbacks: false` refuses
+  # a substitute MODEL, not a substitute provider. Eight identical requests were
+  # all served by Nebius, but that is an observation and not a contract — and
+  # two providers do not produce identical vectors, nor truncate to 2048 the
+  # same way. Pin one before indexing a corpus:
+  # provider: Nebius
+
+# Everything here decides WHAT the archive answers. How much of it travels is
+# the surface's, under `api.defaults` / `mcp.defaults` — the two surfaces are
+# one function, so a question asked through both has to come back ranked the
+# same way (AC-295).
+search:
+  dense_weight: 0.5
+  lexical_weight: 0.5
+  index_search_effort: 40
+  candidate_depth: 50
+  # The ceilings a caller's own knobs are checked against (AC-134). A ranking
+  # knob over its ceiling is REFUSED and never reduced — a reduced ranking is a
+  # different answer, where a reduced window is the same answer shorter
+  # (AC-135, AC-305).
+  max_candidate_depth: 500
+  max_index_search_effort: 1000
+  # The filter's own ceilings (AC-284, AC-285, AC-286): how many clauses, how
+  # deep they may nest, how long a pattern may be before it is refused rather
+  # than compiled, and how long the statement carrying it may run before
+  # PostgreSQL itself cuts it off.
+  max_filter_clauses: 16
+  max_filter_depth: 3
+  max_pattern_length: 200
+  filter_timeout_ms: 2000
+
+rerank:
+  enabled: false
+
+# The conventional routes. `defaults` is what a caller gets when it names
+# nothing; `limits` is what it may not exceed however loudly it asks — two
+# blocks because a ceiling is not a default, and one block holding both would
+# be a name that is false of half its contents.
+api:
+  defaults:
+    search:
+      limit: 10
+      # The brief view's own ceiling: at most this many characters of a
+      # passage's text, cut at a sentence's own end (Q-103). Never the number
+      # of passages — breadth is what tells a user the archive agrees with
+      # itself.
+      brief_length: 500
+    fetch:
+      limit: 50
+      # How much a fetch returns when the identifier names a PIECE rather than
+      # a document (AC-246) — `1274#17` asks to read the passage a search
+      # previewed, `1274` asks to read the contract. The chain
+      # passage_window <= defaults.fetch.limit <= limits.fetch.limit is checked
+      # at boot.
+      passage_window: 3
+  limits:
+    search:
+      limit: 50
+    fetch:
+      limit: 50
+
+# The tool surface, and deliberately narrower (AC-245). The conventional caller
+# reads a fetch into a program; the assistant reads it into a context its
+# client refuses above a fixed size, and fifty pieces at this chunk size is
+# several times over that refusal. Its limits must not exceed the API's — the
+# boot stops a deployment that inverts the pair, naming both.
+#
+# The credential is this surface's own and is named in the client's file beside
+# the API's, which may be the same variable or a different one (AC-297). There
+# is no allowed_hosts here: which names this deployment answers to is one
+# answer for the whole process.
+mcp:
+  defaults:
+    search:
+      limit: 10
+      brief_length: 500
+    fetch:
+      limit: 10
+      passage_window: 3
+  limits:
+    search:
+      limit: 10
+    fetch:
+      limit: 10
+
+usage:
+  raw_retention_days: 30
+  # Off (P-010): a question is the user's, and the measurement does not need it.
+  record_question_text: false
+  # Measure is fact, price is annotation (ASM-075). A missing price lands as a
+  # null on the usage row and every cost figure reports its unpriced units — no
+  # price ever lives in code, not even as a fallback, because a stale one is
+  # more dangerous than an absent one.
+  # Measure is fact, price is annotation (ASM-075). What this file does not
+  # name costs nothing, and the usage row still records a null rather than a
+  # zero — so "free" and "nobody said" stay different answers for anyone who
+  # asks the archive, while the forecast an operator decides on stays one
+  # number.
+  #
+  # An entry names as much as it needs to. `provider` or `model` left out mean
+  # "whichever ran it", and the most specific entry wins — which is why reading
+  # is priced without naming a processor version: upgrading the processor must
+  # not need a line here.
+  #
+  # This is NOT a catalogue. It prices what a deployment on this configuration
+  # can actually bill, and nothing else. A client on another model names its
+  # own rate in its own file; a rate for a vendor nobody runs is a line that
+  # goes stale where nobody is looking — and one of them was worse than stale,
+  # because the price key takes the GATEWAY as the provider and every
+  # `embed/<vendor>/…` line here could never have matched anything.
+  #
+  # Amounts are per SINGLE unit — a deployment converts the vendor's quote
+  # once, here — and are QUOTED, because a YAML number is a binary double and a
+  # price read through one rounds where money must not. A figure without a date
+  # is not evidence, so each carries the day it was verified.
+  prices:
+    # US$ 10 / 1k pages, no volume discount                     (2026-09-08)
+    - operation: read
+      provider: google
+      unit: page
+      amount: "0.01"
+
+    # The free route reads a PDF's own text layer on this deployment's own CPU
+    # and buys no vendor invoice. Zero is the honest figure and it is written
+    # rather than omitted, because that is the difference between "free" and
+    # "nobody said" — an unpriced read reads as a gap in the bill rather than
+    # as a saving.                                              (2026-09-17)
+    - operation: read
+      provider: internal
+      unit: page
+      amount: "0"
+
+    # Every re-cut takes this path: it runs on this deployment's own CPU,
+    # off the artifact already kept, and buys no vendor invoice. Zero is the
+    # honest figure and it is written rather than omitted, because that is
+    # the difference between "free" and "nobody said".      (2026-09-09)
+    - operation: chunk
+      provider: internal
+      model: local
+      unit: page
+      amount: "0"
+
+
+    # US$ 0.01 / 1M tokens — the chosen model, through the gateway. The
+    # provider is who is paid, which through a gateway is the gateway; the
+    # vendor behind it is part of the model's name.           (2026-09-09)
+    - operation: embed
+      provider: openrouter
+      model: qwen/qwen3-embedding-8b
+      unit: token
+      amount: "0.00000001"
+
+    # 0 — the query runs against this deployment's own archive; what it costs
+    # is the platform bill, out of scope.                      (2026-09-09)
+    - operation: search
+      provider: internal
+      unit: request
+      amount: "0"
+
+schedule:
+  # When the worker fires its own full sweep and its own incremental run.
+  # Both are a five-field cron expression, read in UTC (ASM-091) — not the
+  # client's own zone, so a run does not move twice a year.
+  #
+  # ALWAYS QUOTE the value: "0 3 * * *" parses bare because it opens with a
+  # digit, but "*/15 * * * *" opens with YAML's own alias marker and the file
+  # fails to parse (ASM-095).
+  #
+  # Empty here means neither runs on its own, which is how every deployment
+  # has shipped until this feature — a client that wants one states it in its
+  # own file (AC-178).
+  full_sweep: ""
+  incremental: ""

@@ -1,0 +1,249 @@
+{
+  "docai/bloco-sem-identificador.json": [
+    {
+      "content": "Cláusula segunda — do prazo",
+      "heading_path": [
+        "Cláusula segunda — do prazo"
+      ],
+      "ordinal": 0,
+      "page_end": 1,
+      "page_start": 1,
+      "source_block_ids": [
+        "b1"
+      ]
+    }
+  ],
+  "docai/chunk-sem-bloco.json": [
+    {
+      "content": "Cláusula terceira — da garantia",
+      "heading_path": [
+        "Cláusula terceira — da garantia"
+      ],
+      "ordinal": 0,
+      "page_end": 1,
+      "page_start": 1,
+      "source_block_ids": [
+        "b1"
+      ]
+    },
+    {
+      "content": "A garantia é caução equivalente a três aluguéis.",
+      "heading_path": [],
+      "ordinal": 1,
+      "page_end": 1,
+      "page_start": 1,
+      "source_block_ids": [
+        "b9"
+      ]
+    }
+  ],
+  "docai/contrato.json": [
+    {
+      "content": "Contrato de Locação Residencial\n\nPelo presente instrumento particular, as partes abaixo qualificadas ajustam entre si o presente contrato de locação.",
+      "heading_path": [
+        "Contrato de Locação Residencial"
+      ],
+      "ordinal": 0,
+      "page_end": 1,
+      "page_start": 1,
+      "source_block_ids": [
+        "b1",
+        "b2"
+      ]
+    },
+    {
+      "content": "Cláusula primeira — do objeto — ANEXO I, CEP. 20040-020.\n\nO LOCADOR dá em locação ao LOCATÁRIO o imóvel situado à Rua das Palmeiras, 120, nesta cidade.",
+      "heading_path": [
+        "Contrato de Locação Residencial",
+        "Cláusula primeira — do objeto — ANEXO I, CEP. 20040-020."
+      ],
+      "ordinal": 1,
+      "page_end": 1,
+      "page_start": 1,
+      "source_block_ids": [
+        "b3",
+        "b4"
+      ]
+    },
+    {
+      "content": "Do reajuste\n\n1. Reajuste anual pelo IGP-M.",
+      "heading_path": [
+        "Contrato de Locação Residencial",
+        "Cláusula primeira — do objeto — ANEXO I, CEP. 20040-020.",
+        "Do reajuste"
+      ],
+      "ordinal": 2,
+      "page_end": 2,
+      "page_start": 2,
+      "source_block_ids": [
+        "b5",
+        "b6-1"
+      ]
+    },
+    {
+      "content": "Aluguel — todo dia 5 — índice: IGP-M\n\n> Tabela 1 — Parcelas e reajuste\n\n> Tabela de vencimentos do aluguel e dos encargos, com o índice de reajuste aplicável a cada parcela.",
+      "heading_path": [
+        "Contrato de Locação Residencial",
+        "Cláusula primeira — do objeto — ANEXO I, CEP. 20040-020.",
+        "Do reajuste"
+      ],
+      "ordinal": 3,
+      "page_end": 2,
+      "page_start": 2,
+      "source_block_ids": [
+        "b7-c3",
+        "b7-c4",
+        "b7-c5"
+      ]
+    },
+    {
+      "content": "> Planta baixa do imóvel locado, com a metragem dos cômodos.\n\nÁREA TOTAL: 78,4 m²",
+      "heading_path": [
+        "Contrato de Locação Residencial",
+        "Cláusula primeira — do objeto — ANEXO I, CEP. 20040-020.",
+        "Do reajuste"
+      ],
+      "ordinal": 4,
+      "page_end": 2,
+      "page_start": 2,
+      "source_block_ids": [
+        "b8"
+      ]
+    }
+  ],
+  "pdftext/contrato.json": [
+    {
+      "content": "CONTRATO DE LOCAÇÃO RESIDENCIAL\n\nPelo presente instrumento particular, as partes abaixo qualificadas ajustam entre si o presente contrato de locação, que se regerá pelas cláusulas seguintes.",
+      "heading_path": [],
+      "ordinal": 0,
+      "page_end": 1,
+      "page_start": 1,
+      "source_block_ids": [
+        "p1"
+      ]
+    },
+    {
+      "content": "Cláusula primeira — do objeto\n\nO imóvel situado à Rua das Laranjeiras, nº 402, CEP. 20040-020, destina-se exclusivamente à residência do LOCATÁRIO e de sua família.\n\nCláusula segunda — do prazo\n\nA locação vigorará pelo prazo de trinta meses, contados da assinatura deste instrumento.",
+      "heading_path": [],
+      "ordinal": 1,
+      "page_end": 2,
+      "page_start": 2,
+      "source_block_ids": [
+        "p2"
+      ]
+    },
+    {
+      "content": "Cláusula terceira — do aluguel\n\nO aluguel mensal é de R$ 12.400,00 (doze mil e quatrocentos reais), vencível todo dia 5, reajustado anualmente pelo IGP-M.\n\nANEXO I — quadro de parcelas",
+      "heading_path": [],
+      "ordinal": 2,
+      "page_end": 4,
+      "page_start": 4,
+      "source_block_ids": [
+        "p4"
+      ]
+    }
+  ],
+  "pdftext/esparso.json": [
+    {
+      "content": "Termo de encerramento lavrado nesta data.",
+      "heading_path": [],
+      "ordinal": 0,
+      "page_end": 3,
+      "page_start": 3,
+      "source_block_ids": [
+        "p3"
+      ]
+    }
+  ],
+  "pdftext/formula-sem-glifo.json": [
+    {
+      "content": "Cláusula quinta — do critério de julgamento.",
+      "heading_path": [],
+      "ordinal": 0,
+      "page_end": 1,
+      "page_start": 1,
+      "source_block_ids": [
+        "p1"
+      ]
+    },
+    {
+      "content": "A nota será obtida de acordo com a seguinte fórmula:\n \n\n = \n\n \n\n \nNP = Nota da Proposta de Preço;\nMV = Menor Valor ofertado.",
+      "heading_path": [],
+      "ordinal": 1,
+      "page_end": 2,
+      "page_start": 2,
+      "source_block_ids": [
+        "p2"
+      ]
+    }
+  ],
+  "pdftext/uma-pagina.json": [
+    {
+      "content": "Recibo de entrega das chaves.",
+      "heading_path": [],
+      "ordinal": 0,
+      "page_end": 1,
+      "page_start": 1,
+      "source_block_ids": [
+        "p1"
+      ]
+    }
+  ],
+  "synthetic/every-branch": [
+    {
+      "content": "Preâmbulo sem título acima dele.",
+      "heading_path": [],
+      "ordinal": 0,
+      "page_end": 1,
+      "page_start": 1,
+      "source_block_ids": [
+        "t0"
+      ]
+    },
+    {
+      "content": "CONTRATO\nCláusula Primeira\nDo objeto e sua destinação.\nO imóvel destina-se a uso comercial.",
+      "heading_path": [
+        "CONTRATO",
+        "Cláusula Primeira",
+        "Do objeto e sua destinação."
+      ],
+      "ordinal": 1,
+      "page_end": 2,
+      "page_start": 1,
+      "source_block_ids": [
+        "t1",
+        "t2",
+        "t3",
+        "t4"
+      ]
+    },
+    {
+      "content": "1. pagar o aluguel\n2. conservar o imóvel",
+      "heading_path": [
+        "CONTRATO",
+        "Cláusula Primeira",
+        "Do objeto e sua destinação."
+      ],
+      "ordinal": 2,
+      "page_end": 2,
+      "page_start": 2,
+      "source_block_ids": [
+        "l1"
+      ]
+    },
+    {
+      "content": "| Parcela | Valor |\n| --- | --- |\n| 1 | R$ 12.400,00 |\n| 2 | R$ 12.400,00 |\n\n> Tabela de parcelas reajustadas pelo IGP-M",
+      "heading_path": [
+        "CONTRATO",
+        "Cláusula Primeira",
+        "Do objeto e sua destinação."
+      ],
+      "ordinal": 3,
+      "page_end": 3,
+      "page_start": 2,
+      "source_block_ids": [
+        "tb1"
+      ]
+    }
+  ]
+}

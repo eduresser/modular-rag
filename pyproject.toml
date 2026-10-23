@@ -1,0 +1,46 @@
+[project]
+name = "modular-rag"
+version = "0.1.0"
+description = "Modular RAG service: one codebase, many configured deployments, each served as an HTTP API and an MCP server"
+requires-python = ">=3.12"
+dependencies = [
+    "croniter>=6.2.4",
+    # There used to be a document model here — `docling-core[chunking-openai]`
+    # and `huggingface-hub`, and with them tree-sitter, tiktoken, semchunk,
+    # pandas and pillow. The comment that stood in this place recorded that the
+    # extras existed to make an IMPORT work rather than to serve a feature:
+    # `docling_core.transforms.chunker.__init__` pulls in the tree-sitter code
+    # chunkers and, through the hybrid chunker, the model hub, and this service
+    # called neither tokenizer. The model earned its keep only for a cutter that
+    # did not know its reader, and the process stage no longer has one — so the
+    # reader's output is read as itself and the dependency is gone (AC-233).
+    "fastapi>=0.115",
+    "google-auth>=2.57.1",
+    "httpx>=0.28.1",
+    "mcp>=2.2",
+    "psycopg[binary]>=3.2",
+    "pydantic>=2.9",
+    "pypdf>=6.19.0",
+    "pyyaml>=6.0",
+    "uvicorn>=0.34",
+]
+
+[project.scripts]
+# `python -m src <role>` is what a container actually runs; this is the same
+# command under a name a person can type (T-183, AC-176).
+modular-rag = "src.__main__:main"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3",
+    "pytest-tap>=3.4",
+]
+
+# Repositório de serviço, não de biblioteca: nada é empacotado nem instalado.
+[tool.uv]
+package = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# Deixa `import src.config` funcionar a partir da raiz, sem instalar pacote.
+pythonpath = ["."]

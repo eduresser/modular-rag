@@ -1,0 +1,25 @@
+# The source module's own settings, with every default it ships.
+#
+# Documentation, not configuration: a deployment's values live in
+# apps/<client>/config.yaml, read over apps/base/config.yaml. This file exists
+# so a setting the model reads and nobody documented is a defect a test catches
+# (tests/test_gdrive_settings.py compares it field by field).
+
+source:
+  # Which module runs the source stage. A closed set (principle P-011), and
+  # the reason the settings below sit under `source` rather than under a
+  # `gdrive:` section: the stage is what a deployment always has, the vendor is
+  # what it may swap.
+  type: gdrive
+  # What only Google Drive has, and therefore only valid while `type: gdrive`.
+  # ALWAYS a list, even with one folder in it: the watched corpus is a set of
+  # folders, and a singular setting beside a plural one would be two ways of
+  # saying the same thing (Q-119). Listing a folder twice, or listing a folder
+  # and something inside it, costs nothing and changes nothing — the source
+  # resolves the list into the folders it actually enumerates (AC-237).
+  folder_ids:
+  # A reference, never a value (principle P-012): `env:NAME` or
+  # `gcp-sm:projects/…/versions/latest`.
+  credentials_secret:
+  # Measured quota grant, in units a minute; a download costs 200 (ASM-013).
+  units_per_minute: 325000

@@ -1,0 +1,138 @@
+# Per-client configuration template.
+#
+# Copy this to apps/<client>/config.yaml and fill in the ten settings below.
+# They are exactly the ones apps/base/config.yaml deliberately omits, because a
+# placeholder for any of them would let a client that forgot to override it
+# start against the wrong corpus. Onboarding a client is filling in one file,
+# not a code change (US-001).
+#
+# Everything else comes from the base and is overridden only when this client
+# genuinely differs — a short file is the point.
+#
+# A section is named after the STAGE of the pipeline, never after the vendor
+# running it: `source` and `read` carry a `type` naming their module and that
+# module's settings beside it. Moving a client to another source is a change of
+# values in this file, never a renamed section (AC-050's rule, applied to every
+# pluggable stage).
+#
+# Carries no secret value (principle P-012). Each credential names where its
+# value is kept, and there is one place it can be: `env:NAME` reads it from the
+# process's environment — apps/<client>/.env locally, the platform's own
+# variables in production. There is no second backend. A secret manager was one
+# until env-only-secrets removed it: reaching it needed a Google credential from
+# the environment anyway, so it never took the count of unsealed values to zero
+# — it only made one of them open the other three.
+#
+# Each STAGE names the credential it spends, even where several resolve to the
+# same secret — one Google service-account key usually opens the source folder,
+# the reader and the bucket. A stage borrowing its neighbour's reference works
+# right up until a module with a credential of its own is added, and then it
+# fails by silently spending the wrong key.
+
+source:
+  # The client's own Drive folders, each shared with the service account's
+  # address — no domain-wide delegation (ASM-010). Valid while the base says
+  # `type: gdrive`; another source names its own settings here instead.
+  #
+  # ALWAYS a list, even for a client with one folder. Every folder listed has
+  # to be readable by that address: one that is not stops the run naming it,
+  # rather than letting a sweep finish without it and read the missing
+  # documents as deletions (AC-238). A folder that sits inside another listed
+  # folder is fine and changes nothing (AC-237).
+  folder_ids:
+    - FOLDER_ID
+  credentials_secret: env:GOOGLE_SERVICE_ACCOUNT_KEY
+
+process:
+  # WHICH ROUTE THIS CLIENT'S DOCUMENTS TAKE. `apps/base/config.yaml` answers
+  # this already — `type: pdftext`, the free route — so a client happy with that
+  # answer DELETES THIS WHOLE SECTION and writes nothing here at all.
+  #
+  #   pdftext  (the default) this service opens the PDF and reads the text the
+  #            file already carries, at nothing. No headings, no table
+  #            structure, no scan — a scanned document is refused, with the
+  #            reason. A piece is one page, citable by its page number. It needs
+  #            no credential, no bucket and no version: what it read is kept in
+  #            this deployment's own database.
+  #   docai    a provider reads the document and cuts it, at US$ 10 / 1k pages.
+  #            Heading hierarchy, table structure, image descriptions, and it
+  #            reads a scan. A piece is citable by its clause. Everything below
+  #            is what it needs.
+  #
+  # Measured on this service's own corpus: the PDFs' own text layer had 0
+  # corrupted words in 13,815 where the provider's optical recognition returned
+  # 120, and a third of everything the paid route embeds is English prose
+  # describing pictures. What the free route gives up is the heading path, which
+  # moved Context@5 from 26.67% to 61.67%.
+  #
+  # ── Everything below is `type: docai` and nothing else ────────────────────
+  #
+  # A layer merges and never removes, so leaving one of these behind under the
+  # free module stops the boot naming it — which is the refusal working rather
+  # than failing (AC-228).
+  type: docai
+
+  # What the reader and its bucket are reached with. One credential, because
+  # reading and cutting are one call — usually the same secret `source` names:
+  # one key, three services, three narrow scopes.
+  credentials_secret: env:GOOGLE_SERVICE_ACCOUNT_KEY
+
+  read:
+    # The Layout Parser provisioned for this client's documents and region. A
+    # new client on this route has to say for itself whether its material may
+    # be processed outside Brazil, because the provider has no South American
+    # region.
+    processor_id:
+    # Pinned, with no default (AC-036): an unversioned request follows the
+    # provider's console default, which moves without a deploy. v1.0 is the
+    # version that returns bounding boxes.
+    processor_version: pretrained-layout-parser-v1.0-2024-06-03
+    # This client's own bucket (ASM-020, principle P-009): the provider's batch
+    # path writes there, and the kept output is what makes re-cutting cost two
+    # cents a thousand pages instead of ten dollars.
+    artifact_bucket:
+
+  # Everything below has a default and may be omitted:
+  #
+  # region: us            # the provider has two and neither is in South America
+  # chunk:
+  #   size: 800           # in the READER's tokens: ~3,200 characters, not 800
+  #   include_headings: true
+
+embed:
+  credentials_secret: env:OPENROUTER_KEY
+
+db:
+  url:
+
+api:
+  credentials_secret: env:API_TOKEN
+  # Which names this deployment answers to. Both the routes and the mounted
+  # tool transport are given this list, so there is one answer rather than two
+  # that disagree (AC-137).
+  allowed_hosts:
+    - client.example.internal
+
+mcp:
+  # The tool surface's own credential (AC-297). The same variable as the API's
+  # is a fine answer and is what the first deployment writes; a different one
+  # is what lets the assistant's token be revoked without breaking a program's
+  # integration. Required either way — the default for "who may read the
+  # corpus" cannot be "anyone who finds the address" (AC-136).
+  credentials_secret: env:API_TOKEN
+
+telemetry:
+  # This client's name, and it must match the directory: a deployment whose
+  # records are attributed to another client is worse than one that will not
+  # start (T-177).
+  client:
+
+# Not one of the settings above: `schedule.full_sweep` and
+# `schedule.incremental` default to empty in the base, which is how every
+# deployment runs today — nothing fires on its own until this client states a
+# schedule. A client that wants a sweep on a schedule adds this section, as a
+# five-field cron expression read in UTC, ALWAYS QUOTED (an unquoted leading
+# `*` is YAML's own alias marker and the file fails to parse — ASM-095):
+#
+# schedule:
+#   full_sweep: "0 3 * * *"
